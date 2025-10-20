@@ -25,6 +25,7 @@ function base64ToArrayBuffer(base64: string): Uint8Array {
 // =========================================================================
 // K E Y   D E R I V A T I O N
 // =========================================================================
+import { BufferSource } from 'typescript';
 
 async function deriveKeyFromPassword(password: string, salt: Uint8Array): Promise<CryptoKey> {
     const encoder = new TextEncoder();
