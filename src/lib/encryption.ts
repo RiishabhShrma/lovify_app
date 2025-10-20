@@ -12,11 +12,10 @@ const PBKDF2_ITERATIONS = 100_000
 
 /**
  * Ensure the buffer is a plain ArrayBuffer, not SharedArrayBuffer.
- * Updated to properly handle ArrayBuffer | SharedArrayBuffer union type
- * by explicitly checking for SharedArrayBuffer and converting it to ArrayBuffer
+ * Added runtime check for SharedArrayBuffer availability
  */
 function toPlainArrayBuffer(input: ArrayBuffer | SharedArrayBuffer | Uint8Array): ArrayBuffer {
-  if (input instanceof SharedArrayBuffer) {
+  if (typeof SharedArrayBuffer !== "undefined" && input instanceof SharedArrayBuffer) {
     return new Uint8Array(input).buffer.slice(0) as unknown as ArrayBuffer
   }
   if (input instanceof ArrayBuffer) {
@@ -25,7 +24,7 @@ function toPlainArrayBuffer(input: ArrayBuffer | SharedArrayBuffer | Uint8Array)
   if (input instanceof Uint8Array) {
     // Handle Uint8Array whose .buffer might be SharedArrayBuffer
     const buffer = input.buffer
-    if (buffer instanceof SharedArrayBuffer) {
+    if (typeof SharedArrayBuffer !== "undefined" && buffer instanceof SharedArrayBuffer) {
       return new Uint8Array(buffer).buffer.slice(0) as unknown as ArrayBuffer
     }
     return buffer.slice(input.byteOffset, input.byteOffset + input.byteLength)
