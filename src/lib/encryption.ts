@@ -32,7 +32,9 @@ function toPlainArrayBuffer(input: ArrayBuffer | SharedArrayBuffer | Uint8Array)
       copy.set(input)
       return copy.buffer
     }
-    return buffer.slice(input.byteOffset, input.byteOffset + input.byteLength)
+    const copy = new Uint8Array(input.length)
+    copy.set(input)
+    return copy.buffer
   }
   // Fallback: create a fresh ArrayBuffer by copying
   const bytes = new Uint8Array(input)
