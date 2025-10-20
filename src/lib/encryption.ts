@@ -17,7 +17,7 @@ const PBKDF2_ITERATIONS = 100_000
  */
 function toPlainArrayBuffer(input: ArrayBuffer | SharedArrayBuffer | Uint8Array): ArrayBuffer {
   if (input instanceof SharedArrayBuffer) {
-    return new Uint8Array(input).buffer.slice(0) as ArrayBuffer
+    return new Uint8Array(input).buffer.slice(0) as unknown as ArrayBuffer
   }
   if (input instanceof ArrayBuffer) {
     return input
@@ -26,12 +26,12 @@ function toPlainArrayBuffer(input: ArrayBuffer | SharedArrayBuffer | Uint8Array)
     // Handle Uint8Array whose .buffer might be SharedArrayBuffer
     const buffer = input.buffer
     if (buffer instanceof SharedArrayBuffer) {
-      return new Uint8Array(buffer).buffer.slice(0) as ArrayBuffer
+      return new Uint8Array(buffer).buffer.slice(0) as unknown as ArrayBuffer
     }
     return buffer.slice(input.byteOffset, input.byteOffset + input.byteLength)
   }
   // Fallback: ensure we always return ArrayBuffer
-  return new Uint8Array(input).buffer.slice(0) as ArrayBuffer
+  return new Uint8Array(input).buffer.slice(0) as unknown as ArrayBuffer
 }
 
 /**
